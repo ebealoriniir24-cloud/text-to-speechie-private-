@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local AI Voice Cloning & TTS</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Load the ONNX Runtime WebGPU AI engine library -->
     <script type="module">
         import { pipeline } from 'https://jsdelivr.net';
         window.aiPipeline = pipeline;
@@ -15,7 +14,6 @@
     <div class="container">
         <h1>Local AI Voice Engine</h1>
         
-        <!-- 1. Voice Cloning Dashboard Section -->
         <div class="clone-section">
             <h3>1. Load Custom Voice Sample</h3>
             <p class="instructions">Record your voice live OR upload an audio file template.</p>
@@ -35,7 +33,6 @@
             <div id="record-status">Status: Waiting for input sample...</div>
         </div>
 
-        <!-- 2. Text To Speech Section -->
         <div class="tts-section">
             <h3>2. Text to Speech Engine</h3>
             <textarea id="text-input" placeholder="Type or paste your text here..."></textarea>
@@ -52,7 +49,6 @@
                 <input type="range" id="pitch" min="0.5" max="2" value="1" step="0.1">
             </div>
 
-            <!-- AI Model Loading Status Display Bar -->
             <div id="ai-loading-bar" style="display: none; margin-bottom: 15px; font-size: 13px; color: #007bff; font-weight: bold; text-align: center;">
                 ⏳ Downloading AI Model Files to browser... Please wait...
             </div>
@@ -66,4 +62,3 @@
     <script src="app.js"></script>
 </body>
 </html>
-
