@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Cloning & TTS Engine</title>
+    <title>Local AI Voice Cloning & TTS</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Load the ONNX Runtime WebGPU AI engine library -->
+    <script type="module">
+        import { pipeline } from 'https://jsdelivr.net';
+        window.aiPipeline = pipeline;
+    </script>
 </head>
 <body>
     <div class="container">
-        <h1>Voice Clone & TTS Engine</h1>
+        <h1>Local AI Voice Engine</h1>
         
         <!-- 1. Voice Cloning Dashboard Section -->
         <div class="clone-section">
-            <h3>1. Create Custom Voice Identity</h3>
+            <h3>1. Load Custom Voice Sample</h3>
             <p class="instructions">Record your voice live OR upload an audio file template.</p>
             
             <div class="clone-actions">
@@ -21,10 +26,9 @@
                 <button id="upload-btn" type="button">📁 Upload File</button>
             </div>
             
-            <!-- New: Interactive Name Field for Voice Clones -->
             <div class="name-container">
                 <label for="voice-name-input">Assign Voice Name:</label>
-                <input type="text" id="voice-name-input" placeholder="e.g., My Awesome Voice" disabled>
+                <input type="text" id="voice-name-input" placeholder="e.g., Cloned Voice" disabled>
             </div>
             
             <button id="add-voice-btn" disabled>➕ Add Cloned Voice</button>
@@ -48,6 +52,11 @@
                 <input type="range" id="pitch" min="0.5" max="2" value="1" step="0.1">
             </div>
 
+            <!-- AI Model Loading Status Display Bar -->
+            <div id="ai-loading-bar" style="display: none; margin-bottom: 15px; font-size: 13px; color: #007bff; font-weight: bold; text-align: center;">
+                ⏳ Downloading AI Model Files to browser... Please wait...
+            </div>
+
             <div class="buttons">
                 <button id="speak-btn">🔊 Generate Speech</button>
                 <button id="stop-btn" class="stop">🛑 Stop Audio</button>
@@ -57,3 +66,4 @@
     <script src="app.js"></script>
 </body>
 </html>
+
