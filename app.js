@@ -125,12 +125,11 @@ addVoiceBtn.addEventListener('click', () => {
     }
 });
 
-// Converts audio files into raw feature matrices using Web Audio API
 async function extractAudioFeatures(blob) {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const arrayBuffer = await blob.arrayBuffer();
     const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-    return audioBuffer.getChannelData(0); // Return float32 sequence
+    return audioBuffer.getChannelData(0);
 }
 
 async function speak() {
@@ -153,7 +152,6 @@ async function speak() {
         speakBtn.disabled = true;
 
         try {
-            // 1. Lazy load the browser-optimized neural audio compilation network model files
             if (!ttsPipeline && window.aiPipeline) {
                 aiLoadingBar.textContent = "⏳ Downloading browser AI acoustic engine (Xenova/speecht5_tts)...";
                 ttsPipeline = await window.aiPipeline('text-to-speech', 'Xenova/speecht5_tts');
@@ -161,15 +159,11 @@ async function speak() {
 
             aiLoadingBar.textContent = "🧠 Morphing voice timeline structures locally using WebGPU...";
             
-            // Extract raw features from the uploaded user file to act as the speech embedding
             const rawFeatures = await extractAudioFeatures(activeClone.audioBlob);
-            
-            // 2. Synthesize brand new words matching the target voice matrix locally inside the tab!
             const speakerEmbeddings = new Float32Array(512).map((_, i) => rawFeatures[i % rawFeatures.length] || 0.0);
             
             const output = await ttsPipeline(safeText, { speaker_embeddings: speakerEmbeddings });
             
-            // 3. Play the generated native floating point raw waveform result back
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const buffer = audioCtx.createBuffer(1, output.audio.length, output.sampling_rate);
             buffer.getChannelData(0).set(output.audio);
@@ -182,7 +176,7 @@ async function speak() {
             aiLoadingBar.style.display = "none";
         } catch (error) {
             console.error("Local Browser AI Error:", error);
-            aiLoadingBar.textContent = "❌ Your device browser doesn't support WebGPU modeling.";
+            aiLoadingBar.textContent = "❌ Error processing AI model file.";
         }
         speakBtn.disabled = false;
     } else {
