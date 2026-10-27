@@ -3,35 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Voice Cloning & TTS System</title>
+    <title>Voice Cloning & TTS Engine</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>Voice Clone & TTS Engine</h1>
         
-        <!-- Voice Cloning Dashboard -->
+        <!-- 1. Voice Cloning Dashboard Section -->
         <div class="clone-section">
-            <h3>1. Clone a New Voice</h3>
-            <p class="instructions">Tap record and read: <em>"The quick brown fox jumps over the lazy dog."</em></p>
-            <div class="clone-controls">
-                <button id="record-btn">🎤 Record Voice Sample</button>
-                <span id="record-status">Ready to clone...</span>
+            <h3>1. Create Custom Voice Identity</h3>
+            <p class="instructions">Record your voice live OR upload an audio file template.</p>
+            
+            <div class="clone-actions">
+                <button id="record-btn">🎤 Start Recording</button>
+                <input type="file" id="audio-file-input" accept="audio/*" style="display: none;">
+                <button id="upload-btn" type="button">📁 Upload File</button>
             </div>
+            
+            <!-- New: Interactive Name Field for Voice Clones -->
+            <div class="name-container">
+                <label for="voice-name-input">Assign Voice Name:</label>
+                <input type="text" id="voice-name-input" placeholder="e.g., My Awesome Voice" disabled>
+            </div>
+            
+            <button id="add-voice-btn" disabled>➕ Add Cloned Voice</button>
+            <div id="record-status">Status: Waiting for input sample...</div>
         </div>
 
-        <!-- Standard TTS Application Interface -->
+        <!-- 2. Text To Speech Section -->
         <div class="tts-section">
-            <h3>2. Generate Speech Engine</h3>
+            <h3>2. Text to Speech Engine</h3>
             <textarea id="text-input" placeholder="Type or paste your text here..."></textarea>
+            <p class="filter-notice">⚠️ Automatic profanity cleaning enabled.</p>
             
             <div class="controls">
                 <label for="voice-select">Choose Active Voice Profile:</label>
-                <select id="voice-select">
-                    <!-- Cloned profiles will inject dynamically here -->
-                </select>
+                <select id="voice-select"></select>
 
-                <label for="rate">Speed / Tempo Modification:</label>
+                <label for="rate">Speed / Tempo Modifier:</label>
                 <input type="range" id="rate" min="0.5" max="2" value="1" step="0.1">
 
                 <label for="pitch">Pitch Modulation Level:</label>
@@ -47,4 +57,5 @@
     <script src="app.js"></script>
 </body>
 </html>
+
 
