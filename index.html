@@ -3,30 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text to Speech</title>
+    <title>AI Voice Cloning & TTS System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Text To Speech</h1>
-        <textarea id="text-input" placeholder="Type your text here..."></textarea>
+        <h1>Voice Clone & TTS Engine</h1>
         
-        <div class="controls">
-            <label for="voice-select">Voice:</label>
-            <select id="voice-select"></select>
-
-            <label for="rate">Speed:</label>
-            <input type="range" id="rate" min="0.5" max="2" value="1" step="0.1">
-
-            <label for="pitch">Pitch:</label>
-            <input type="range" id="pitch" min="0" max="2" value="1" step="0.1">
+        <!-- Voice Cloning Dashboard -->
+        <div class="clone-section">
+            <h3>1. Clone a New Voice</h3>
+            <p class="instructions">Tap record and read: <em>"The quick brown fox jumps over the lazy dog."</em></p>
+            <div class="clone-controls">
+                <button id="record-btn">🎤 Record Voice Sample</button>
+                <span id="record-status">Ready to clone...</span>
+            </div>
         </div>
 
-        <div class="buttons">
-            <button id="speak-btn">Speak</button>
-            <button id="stop-btn" class="stop">Stop</button>
+        <!-- Standard TTS Application Interface -->
+        <div class="tts-section">
+            <h3>2. Generate Speech Engine</h3>
+            <textarea id="text-input" placeholder="Type or paste your text here..."></textarea>
+            
+            <div class="controls">
+                <label for="voice-select">Choose Active Voice Profile:</label>
+                <select id="voice-select">
+                    <!-- Cloned profiles will inject dynamically here -->
+                </select>
+
+                <label for="rate">Speed / Tempo Modification:</label>
+                <input type="range" id="rate" min="0.5" max="2" value="1" step="0.1">
+
+                <label for="pitch">Pitch Modulation Level:</label>
+                <input type="range" id="pitch" min="0.5" max="2" value="1" step="0.1">
+            </div>
+
+            <div class="buttons">
+                <button id="speak-btn">🔊 Generate Speech</button>
+                <button id="stop-btn" class="stop">🛑 Stop Audio</button>
+            </div>
         </div>
     </div>
     <script src="app.js"></script>
 </body>
 </html>
+
