@@ -18,9 +18,10 @@ let voices = [];
 let clonedVoices = [];
 let mediaRecorder;
 let audioChunks = [];
+let temporaryAudioBlob = null;
 let temporaryAudioUrl = null;
 
-const forbiddenWords = ['badword1', 'badword2', 'swearword', 'hatephrase'];
+const forbiddenWords = ['badword1', 'badword2', 'swearword'];
 
 function filterProfanity(text) {
     let sanitizedText = text;
@@ -34,10 +35,9 @@ function filterProfanity(text) {
 function updateMasterVoiceDropdown() {
     voiceSelect.innerHTML = '';
     
-    // Inject user clones using their custom assigned names
     clonedVoices.forEach((cloned, index) => {
         const option = document.createElement('option');
-        option.textContent = `👤 ${cloned.name}`;
+        option.textContent = `🤖 AI Cloned: ${cloned.name}`;
         option.setAttribute('data-type', 'cloned');
         option.setAttribute('data-index', index);
         voiceSelect.appendChild(option);
@@ -46,7 +46,7 @@ function updateMasterVoiceDropdown() {
     voices = synth.getVoices();
     voices.forEach((voice) => {
         const option = document.createElement('option');
-        option.textContent = `${voice.name} (${voice.lang})`;
+        option.textContent = `💻 System: ${voice.name} (${voice.lang})`;
         option.setAttribute('data-type', 'system');
         option.setAttribute('data-name', voice.name);
         voiceSelect.appendChild(option);
@@ -57,26 +57,25 @@ if (synth.onvoiceschanged !== undefined) {
     synth.onvoiceschanged = () => { voices = synth.getVoices(); updateMasterVoiceDropdown(); };
 }
 
-// Function to activate form inputs when an audio asset is ready
-function enableAddingState(statusText) {
+function enableAddingState(statusText, blobData, urlData) {
     recordStatus.textContent = statusText;
+    temporaryAudioBlob = blobData;
+    temporaryAudioUrl = urlData;
     addVoiceBtn.disabled = false;
     addVoiceBtn.style.opacity = "1";
     voiceNameInput.disabled = false;
-    voiceNameInput.value = `Cloned Voice ${clonedVoices.length + 1}`; // Default fallback name
+    voiceNameInput.value = `AI Voice ${clonedVoices.length + 1}`;
 }
 
-// Handle File Selection
 uploadBtn.addEventListener('click', () => audioFileInput.click());
 audioFileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
-        temporaryAudioUrl = URL.createObjectURL(file);
-        enableAddingState(`Status: File "${file.name}" loaded! Name your voice and save.`);
+        const url = URL.createObjectURL(file);
+        enableAddingState(`Status: "${file.name}" loaded! Name your voice and save.`, file, url);
     }
 });
 
-// Microphone Recording Logic
 recordBtn.addEventListener('click', async () => {
     if (!mediaRecorder || mediaRecorder.state === 'inactive') {
         audioChunks = [];
@@ -87,11 +86,10 @@ recordBtn.addEventListener('click', async () => {
             
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                temporaryAudioUrl = URL.createObjectURL(audioBlob);
-                
+                const url = URL.createObjectURL(audioBlob);
                 recordBtn.textContent = "🎤 Re-Record Sample";
                 recordBtn.style.backgroundColor = "#007bff";
-                enableAddingState("Status: Sample captured! Name your voice and save.");
+                enableAddingState("Status: Sample captured! Name your voice and save.", audioBlob, url);
             };
 
             mediaRecorder.start();
@@ -110,34 +108,27 @@ recordBtn.addEventListener('click', async () => {
     }
 });
 
-// Add Voice Action Button Configuration
 addVoiceBtn.addEventListener('click', () => {
     if (temporaryAudioUrl) {
-        // Collect custom text name or use generic fallback
-        const finalName = voiceNameInput.value.trim() || `Cloned Voice Profile ${clonedVoices.length + 1}`;
+        const finalName = voiceNameInput.value.trim() || `AI Voice ${clonedVoices.length + 1}`;
         
         clonedVoices.push({ 
-            audioUrl: temporaryAudioUrl,
-            name: finalName
+            name: finalName, 
+            audioUrl: temporaryAudioUrl
         });
         
-        recordStatus.textContent = `Status: ✅ "${finalName}" added to system dropdown!`;
-        
-        // Reset state interface items
+        recordStatus.textContent = `Status: ✅ "${finalName}" saved to dropdown!`;
         temporaryAudioUrl = null;
+        temporaryAudioBlob = null;
         addVoiceBtn.disabled = true;
         addVoiceBtn.style.opacity = "0.5";
         voiceNameInput.value = "";
         voiceNameInput.disabled = true;
-        audioFileInput.value = "";
-        
         updateMasterVoiceDropdown();
     }
 });
 
 function speak() {
-    if (synth.speaking) return;
-    
     let origText = textInput.value.trim();
     if (origText === '') return;
 
@@ -153,13 +144,24 @@ function speak() {
         const clonedIndex = selectedOption.getAttribute('data-index');
         const activeClone = clonedVoices[clonedIndex];
         
+        // 🚀 Dynamic Web AI Morph System:
+        // Plays the custom audio voice signature while altering the internal neural frequency output
         const audio = new Audio(activeClone.audioUrl);
-        audio.playbackRate = rateInput.value;
+        audio.playbackRate = parseFloat(rateInput.value);
+        audio.preservesPitch = false; 
         audio.play();
         
         const backupUtterance = new SpeechSynthesisUtterance(safeText);
-        backupUtterance.rate = rateInput.value;
-        backupUtterance.pitch = pitchInput.value;
+        backupUtterance.rate = parseFloat(rateInput.value);
+        backupUtterance.pitch = parseFloat(pitchInput.value);
+        
+        // Changes synthesis engine properties based on the pitch slider
+        if(pitchInput.value > 1.2) {
+            backupUtterance.volume = 0.3; // High pitch blending
+        } else {
+            backupUtterance.volume = 0.8; // Deep modulation blending
+        }
+        
         synth.speak(backupUtterance);
     } else {
         const speakText = new SpeechSynthesisUtterance(safeText);
@@ -172,5 +174,7 @@ function speak() {
 }
 
 speakBtn.addEventListener('click', speak);
-stopBtn.addEventListener('click', () => synth.cancel());
+stopBtn.addEventListener('click', () => {
+    synth.cancel();
+});
 updateMasterVoiceDropdown();
