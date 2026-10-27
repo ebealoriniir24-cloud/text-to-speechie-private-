@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #eef2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 480px;
+    box-sizing: border-box;
+}
+h1 { margin-top: 0; color: #1a1a1a; text-align: center; font-size: 24px;}
+h3 { margin: 10px 0; color: #444; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px;}
+.clone-section {
+    background: #f8fafd;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dbe3ed;
+    margin-bottom: 20px;
+}
+.instructions { font-size: 13px; color: #666; font-style: italic; margin-bottom: 15px; }
+.clone-actions { display: flex; gap: 10px; margin-bottom: 12px; }
+.name-container { margin-bottom: 12px; }
+#voice-name-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+#voice-name-input:disabled { background-color: #e9ecef; color: #6c757d; }
+#record-btn { background-color: #007bff; font-size: 14px; }
+#upload-btn { background-color: #6c757d; font-size: 14px; }
+#add-voice-btn { background-color: #ffc107; color: #212529; font-size: 15px; width: 100%; opacity: 0.5; }
+#record-status { font-size: 12px; font-weight: bold; color: #555; text-align: center; margin-top: 8px; }
+textarea {
+    width: 100%;
+    height: 120px;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    resize: none;
+    font-size: 15px;
+}
+.filter-notice {
+    font-size: 11px;
+    color: #a04040;
+    margin: 4px 0 12px 2px;
+    font-style: italic;
+}
+.controls { margin: 15px 0; }
+label { display: block; font-size: 14px; font-weight: bold; margin: 10px 0 4px; color: #444; }
+select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; background: white; }
+input[type="range"] { width: 100%; margin-bottom: 12px; }
+.buttons { display: flex; gap: 10px; }
+button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #28a745;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+button.stop { background-color: #dc3545; }
+button:hover { opacity: 0.85; }
